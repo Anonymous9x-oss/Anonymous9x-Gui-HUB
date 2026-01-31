@@ -1,439 +1,366 @@
--- ANONYMOUS9X HUB - PERFECT EDITION
+-- MODERN UI HUB - FIXED LAYOUT
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
--- Hapus GUI lama
-if PlayerGui:FindFirstChild("PerfectHub") then
-    PlayerGui.PerfectHub:Destroy()
+if PlayerGui:FindFirstChild("ModernFixed") then
+    PlayerGui.ModernFixed:Destroy()
 end
 
 -- ==================== CONFIG ====================
 local Config = {
     Title = "ANONYMOUS HUB",
     LogoID = "rbxassetid://97269958324726",
+    Theme = {
+        Primary = Color3.fromRGB(10, 132, 255),
+        Secondary = Color3.fromRGB(94, 92, 230),
+        Background = Color3.fromRGB(28, 28, 30),
+        Card = Color3.fromRGB(44, 44, 46),
+        Text = Color3.fromRGB(242, 242, 247),
+        Subtext = Color3.fromRGB(142, 142, 147)
+    },
     Scripts = {
-        {Name = "👁️ ESP", URL = "", Desc = "See through walls"},
-        {Name = "👻 HIDE NAME", URL = "", Desc = "Hide display name"},
-        {Name = "✨ GLOW", URL = "", Desc = "Glowing effect"},
-        {Name = "🌌 SKYBOX", URL = "", Desc = "Change skybox"},
-        {Name = "⚡ FLY", URL = "", Desc = "Enable flying"},
-        {Name = "🏎️ SPEED", URL = "", Desc = "Increase speed"},
-        {Name = "🛡️ ANTI-AFK", URL = "", Desc = "Prevent AFK kick"},
-        {Name = "🔧 ADMIN", URL = "", Desc = "Admin tools"},
-        {Name = "💰 FARM", URL = "", Desc = "Auto farm"},
-        {Name = "🎯 AIM", URL = "", Desc = "Auto aim"}
+        {Name = "ESP", Icon = "👁️", URL = "", Desc = "See through walls"},
+        {Name = "HIDE NAME", Icon = "👻", URL = "", Desc = "Hide display name"},
+        {Name = "GLOW", Icon = "✨", URL = "", Desc = "Glowing effect"},
+        {Name = "SKYBOX", Icon = "🌌", URL = "", Desc = "Change skybox"},
+        {Name = "FLY", Icon = "⚡", URL = "", Desc = "Enable flying"},
+        {Name = "SPEED", Icon = "🏎️", URL = "", Desc = "Increase speed"},
+        {Name = "ANTI-AFK", Icon = "🛡️", URL = "", Desc = "Prevent AFK kick"},
+        {Name = "ADMIN", Icon = "🔧", URL = "", Desc = "Admin tools"},
+        {Name = "FARM", Icon = "💰", URL = "", Desc = "Auto farm"},
+        {Name = "AIMBOT", Icon = "🎯", URL = "", Desc = "Auto aim"}
     }
 }
 
--- ==================== GUI UTAMA ====================
+-- ==================== UI SETUP ====================
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "PerfectHub"
+ScreenGui.Name = "ModernFixed"
 ScreenGui.ResetOnSpawn = false
 
-local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 320, 0, 420)
-MainFrame.Position = UDim2.new(0.05, 0, 0.1, 0)
-MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
-MainFrame.Active = true
+local AppWindow = Instance.new("Frame")
+AppWindow.Size = UDim2.new(0, 400, 0, 550) -- TINGGI DITAMBAH
+AppWindow.Position = UDim2.new(0.5, -200, 0.5, -275)
+AppWindow.BackgroundColor3 = Config.Theme.Background
+AppWindow.BackgroundTransparency = 0.1
 
--- DRAGGING SYSTEM
-local draggingMain = false
-local dragStartMain = Vector2.new(0, 0)
-local startPosMain = MainFrame.Position
+local WindowCorner = Instance.new("UICorner")
+WindowCorner.CornerRadius = UDim.new(0, 24)
 
-MainFrame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        draggingMain = true
-        dragStartMain = Vector2.new(input.Position.X, input.Position.Y)
-        startPosMain = MainFrame.Position
-    end
-end)
+-- ==================== HEADER ====================
+local Header = Instance.new("Frame")
+Header.Size = UDim2.new(1, 0, 0, 70)
+Header.BackgroundTransparency = 1
 
-MainFrame.InputChanged:Connect(function(input)
-    if draggingMain and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-        local delta = Vector2.new(input.Position.X, input.Position.Y) - dragStartMain
-        MainFrame.Position = UDim2.new(
-            startPosMain.X.Scale,
-            startPosMain.X.Offset + delta.X,
-            startPosMain.Y.Scale,
-            startPosMain.Y.Offset + delta.Y
-        )
-    end
-end)
+local Avatar = Instance.new("ImageLabel")
+Avatar.Image = Config.LogoID
+Avatar.Size = UDim2.new(0, 50, 0, 50)
+Avatar.Position = UDim2.new(0, 20, 0.5, -25)
+Avatar.BackgroundColor3 = Config.Theme.Primary
+Avatar.BackgroundTransparency = 0.8
 
-MainFrame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        draggingMain = false
-    end
-end)
+local AvatarCorner = Instance.new("UICorner")
+AvatarCorner.CornerRadius = UDim.new(1, 0)
 
--- TITLE BAR
-local TitleBar = Instance.new("TextButton")
-TitleBar.Text = ""
-TitleBar.Size = UDim2.new(1, 0, 0, 35)
-TitleBar.BackgroundColor3 = Color3.fromRGB(0, 100, 200)
-TitleBar.AutoButtonColor = false
-TitleBar.Parent = MainFrame
+local Username = Instance.new("TextLabel")
+Username.Text = Config.Title
+Username.Size = UDim2.new(0.6, 0, 0, 24)
+Username.Position = UDim2.new(0, 80, 0, 18)
+Username.BackgroundTransparency = 1
+Username.TextColor3 = Config.Theme.Text
+Username.Font = Enum.Font.GothamBold
+Username.TextSize = 18
+Username.TextXAlignment = Enum.TextXAlignment.Left
 
-local Title = Instance.new("TextLabel")
-Title.Text = "🧿 " .. Config.Title
-Title.Size = UDim2.new(1, -70, 1, 0)
-Title.Position = UDim2.new(0, 10, 0, 0)
-Title.BackgroundTransparency = 1
-Title.TextColor3 = Color3.new(1, 1, 1)
-Title.Font = Enum.Font.GothamBold
-Title.TextSize = 14
-Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.Parent = TitleBar
+local Status = Instance.new("TextLabel")
+Status.Text = "Script Hub • 10 Features"
+Status.Size = UDim2.new(0.6, 0, 0, 20)
+Status.Position = UDim2.new(0, 80, 0, 42)
+Status.BackgroundTransparency = 1
+Status.TextColor3 = Config.Theme.Subtext
+Status.Font = Enum.Font.Gotham
+Status.TextSize = 12
+Status.TextXAlignment = Enum.TextXAlignment.Left
 
 local MinimizeBtn = Instance.new("TextButton")
-MinimizeBtn.Text = "_"
-MinimizeBtn.Size = UDim2.new(0, 25, 0, 25)
-MinimizeBtn.Position = UDim2.new(1, -60, 0.5, -12)
-MinimizeBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 255)
-MinimizeBtn.TextColor3 = Color3.new(1, 1, 1)
+MinimizeBtn.Text = "−"
+MinimizeBtn.Size = UDim2.new(0, 32, 0, 32)
+MinimizeBtn.Position = UDim2.new(1, -74, 0.5, -16)
+MinimizeBtn.BackgroundColor3 = Config.Theme.Card
+MinimizeBtn.TextColor3 = Config.Theme.Text
 MinimizeBtn.Font = Enum.Font.GothamBold
-MinimizeBtn.TextSize = 12
-MinimizeBtn.Parent = TitleBar
+MinimizeBtn.TextSize = 16
+
+local MinimizeCorner = Instance.new("UICorner")
+MinimizeCorner.CornerRadius = UDim.new(0, 8)
 
 local CloseBtn = Instance.new("TextButton")
-CloseBtn.Text = "X"
-CloseBtn.Size = UDim2.new(0, 25, 0, 25)
-CloseBtn.Position = UDim2.new(1, -30, 0.5, -12)
-CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+CloseBtn.Text = "×"
+CloseBtn.Size = UDim2.new(0, 32, 0, 32)
+CloseBtn.Position = UDim2.new(1, -36, 0.5, -16)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 59, 48)
 CloseBtn.TextColor3 = Color3.new(1, 1, 1)
 CloseBtn.Font = Enum.Font.GothamBold
-CloseBtn.TextSize = 12
-CloseBtn.Parent = TitleBar
+CloseBtn.TextSize = 16
 
--- SCROLL FRAME
-local ScrollFrame = Instance.new("ScrollingFrame")
-ScrollFrame.Size = UDim2.new(1, -10, 1, -45)
-ScrollFrame.Position = UDim2.new(0, 5, 0, 40)
-ScrollFrame.BackgroundTransparency = 1
-ScrollFrame.ScrollBarThickness = 3
-ScrollFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 100, 200)
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0, 8)
 
-local UIListLayout = Instance.new("UIListLayout")
-UIListLayout.Padding = UDim.new(0, 6)
+-- ==================== SCRIPT GRID (MANUAL 2 COLUMNS) ====================
+local Content = Instance.new("Frame")
+Content.Size = UDim2.new(1, -40, 1, -100)
+Content.Position = UDim2.new(0, 20, 0, 80)
+Content.BackgroundTransparency = 1
 
--- ==================== KOTAK MINIMIZE ====================
-local MinimizedFrame = Instance.new("TextButton")
-MinimizedFrame.Text = ""
-MinimizedFrame.Size = UDim2.new(0, 50, 0, 50)
-MinimizedFrame.Position = UDim2.new(0.9, 0, 0.1, 0)
-MinimizedFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-MinimizedFrame.AutoButtonColor = false
-MinimizedFrame.Visible = false
-MinimizedFrame.Parent = ScreenGui
+local SectionTitle = Instance.new("TextLabel")
+SectionTitle.Text = "AVAILABLE SCRIPTS"
+SectionTitle.Size = UDim2.new(1, 0, 0, 30)
+SectionTitle.BackgroundTransparency = 1
+SectionTitle.TextColor3 = Config.Theme.Subtext
+SectionTitle.Font = Enum.Font.GothamBold
+SectionTitle.TextSize = 12
+SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
+SectionTitle.Parent = Content
 
-local MinimizedLogo = Instance.new("ImageLabel")
-MinimizedLogo.Image = Config.LogoID
-MinimizedLogo.Size = UDim2.new(0.7, 0, 0.7, 0)
-MinimizedLogo.Position = UDim2.new(0.15, 0, 0.15, 0)
-MinimizedLogo.BackgroundTransparency = 1
-MinimizedLogo.ScaleType = Enum.ScaleType.Fit
-MinimizedLogo.ImageColor3 = Color3.fromRGB(255, 255, 255)
-MinimizedLogo.Parent = MinimizedFrame
+-- GRID SETTINGS
+local CARD_WIDTH = 160
+local CARD_HEIGHT = 80
+local CARD_MARGIN_X = 15
+local CARD_MARGIN_Y = 12
+local COLUMNS = 2
 
--- ==================== LOADING SYSTEM (FIXED) ====================
-local LoadStatus = {
-    -- Status untuk tiap script
-    ["👁️ ESP"] = {loaded = false, url = ""},
-    ["👻 HIDE NAME"] = {loaded = false, url = ""},
-    ["✨ GLOW"] = {loaded = false, url = ""},
-    ["🌌 SKYBOX"] = {loaded = false, url = ""},
-    ["⚡ FLY"] = {loaded = false, url = ""},
-    ["🏎️ SPEED"] = {loaded = false, url = ""},
-    ["🛡️ ANTI-AFK"] = {loaded = false, url = ""},
-    ["🔧 ADMIN"] = {loaded = false, url = ""},
-    ["💰 FARM"] = {loaded = false, url = ""},
-    ["🎯 AIM"] = {loaded = false, url = ""}
-}
-
-local function LoadScript(scriptName, url, button)
-    -- CEK JIKA URL MASIH KOSONG
-    if url == "" then
-        -- TAMPILKAN POPUP INPUT
-        local popup = Instance.new("Frame")
-        popup.Size = UDim2.new(0, 300, 0, 150)
-        popup.Position = UDim2.new(0.5, -150, 0.5, -75)
-        popup.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
-        popup.Parent = ScreenGui
-        
-        local title = Instance.new("TextLabel")
-        title.Text = "⚠️ URL REQUIRED"
-        title.Size = UDim2.new(1, 0, 0, 40)
-        title.BackgroundColor3 = Color3.fromRGB(200, 100, 0)
-        title.TextColor3 = Color3.new(1, 1, 1)
-        title.Font = Enum.Font.GothamBold
-        title.TextSize = 14
-        title.Parent = popup
-        
-        local info = Instance.new("TextLabel")
-        info.Text = "Script '" .. scriptName .. "' needs a URL\nPaste your loadstring URL below:"
-        info.Size = UDim2.new(1, -20, 0, 50)
-        info.Position = UDim2.new(0, 10, 0, 45)
-        info.BackgroundTransparency = 1
-        info.TextColor3 = Color3.new(1, 1, 1)
-        info.Font = Enum.Font.Gotham
-        info.TextSize = 12
-        info.Parent = popup
-        
-        local inputBox = Instance.new("TextBox")
-        inputBox.PlaceholderText = "https://pastebin.com/raw/..."
-        inputBox.Size = UDim2.new(1, -20, 0, 30)
-        inputBox.Position = UDim2.new(0, 10, 0, 100)
-        inputBox.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
-        inputBox.TextColor3 = Color3.new(1, 1, 1)
-        inputBox.Font = Enum.Font.Gotham
-        inputBox.TextSize = 12
-        inputBox.Parent = popup
-        
-        local saveBtn = Instance.new("TextButton")
-        saveBtn.Text = "SAVE URL"
-        saveBtn.Size = UDim2.new(0, 100, 0, 30)
-        saveBtn.Position = UDim2.new(0.5, -50, 1, -40)
-        saveBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 100)
-        saveBtn.TextColor3 = Color3.new(1, 1, 1)
-        saveBtn.Font = Enum.Font.GothamBold
-        saveBtn.TextSize = 12
-        saveBtn.Parent = popup
-        
-        saveBtn.MouseButton1Click:Connect(function()
-            if inputBox.Text ~= "" then
-                -- Simpan URL ke config
-                LoadStatus[scriptName].url = inputBox.Text
-                
-                -- Update button state
-                button.Text = "▶ READY"
-                button.BackgroundColor3 = Color3.fromRGB(0, 120, 200)
-                
-                popup:Destroy()
-            end
-        end)
-        
-        return false
-    end
-    
-    -- LOADING ANIMATION
-    local originalText = button.Text
-    local originalColor = button.BackgroundColor3
-    
-    button.Text = "⏳ LOADING..."
-    button.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
-    
-    -- SIMULASI LOADING (karena URL masih kosong)
-    local dots = 0
-    local loadingAnim = task.spawn(function()
-        while button.Text == "⏳ LOADING..." do
-            dots = (dots + 1) % 4
-            button.Text = "⏳ LOADING" .. string.rep(".", dots)
-            task.wait(0.3)
-        end
-    end)
-    
-    -- TEST URL (simulasi)
-    task.wait(1.5) -- Simulasi loading time
-    
-    -- HENTIKAN ANIMASI
-    task.cancel(loadingAnim)
-    
-    -- CEK JIKA URL VALID
-    if url:find("https://") and url:find(".com") then
-        -- SUCCESS STATE
-        LoadStatus[scriptName].loaded = true
-        button.Text = "✅ LOADED"
-        button.BackgroundColor3 = Color3.fromRGB(0, 180, 0)
-        
-        -- TAMPILKAN NOTIFIKASI SUKSES
-        local notif = Instance.new("Frame")
-        notif.Size = UDim2.new(0, 250, 0, 60)
-        notif.Position = UDim2.new(0.5, -125, 0.8, 0)
-        notif.BackgroundColor3 = Color3.fromRGB(40, 180, 40)
-        notif.Parent = ScreenGui
-        
-        local notifText = Instance.new("TextLabel")
-        notifText.Text = "✅ " .. scriptName .. " loaded!"
-        notifText.Size = UDim2.new(1, 0, 1, 0)
-        notifText.BackgroundTransparency = 1
-        notifText.TextColor3 = Color3.new(1, 1, 1)
-        notifText.Font = Enum.Font.GothamBold
-        notifText.TextSize = 13
-        notifText.Parent = notif
-        
-        task.wait(2)
-        notif:Destroy()
-        
-        task.wait(0.5)
-        button.Text = "▶ LOADED"
-        button.BackgroundColor3 = Color3.fromRGB(0, 150, 100)
-    else
-        -- ERROR STATE
-        button.Text = "❌ INVALID URL"
-        button.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
-        
-        task.wait(2)
-        button.Text = originalText
-        button.BackgroundColor3 = originalColor
-    end
-    
-    return true
-end
-
--- ==================== CREATE SCRIPT BUTTONS ====================
+-- CREATE CARDS WITH MANUAL POSITIONING
 for i, scriptData in ipairs(Config.Scripts) do
-    local ButtonFrame = Instance.new("TextButton")
-    ButtonFrame.Name = "Btn_" .. scriptData.Name
-    ButtonFrame.Text = ""
-    ButtonFrame.Size = UDim2.new(1, 0, 0, 55)
-    ButtonFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
-    ButtonFrame.AutoButtonColor = false
+    -- CALCULATE GRID POSITION
+    local col = (i - 1) % COLUMNS
+    local row = math.floor((i - 1) / COLUMNS)
     
-    -- STATUS INDICATOR (kiri)
-    local StatusDot = Instance.new("Frame")
-    StatusDot.Name = "StatusDot"
-    StatusDot.Size = UDim2.new(0, 6, 0, 6)
-    StatusDot.Position = UDim2.new(0, 3, 0.5, -3)
-    StatusDot.BackgroundColor3 = Color3.fromRGB(150, 150, 150) -- GREY = not loaded
-    StatusDot.BorderSizePixel = 0
-    StatusDot.Parent = ButtonFrame
+    local xPos = col * (CARD_WIDTH + CARD_MARGIN_X)
+    local yPos = 30 + (row * (CARD_HEIGHT + CARD_MARGIN_Y))
     
-    -- ICON
+    -- CREATE CARD
+    local Card = Instance.new("TextButton")
+    Card.Text = ""
+    Card.Size = UDim2.new(0, CARD_WIDTH, 0, CARD_HEIGHT)
+    Card.Position = UDim2.new(0, xPos, 0, yPos)
+    Card.BackgroundColor3 = Config.Theme.Card
+    Card.AutoButtonColor = false
+    
+    local CardCorner = Instance.new("UICorner")
+    CardCorner.CornerRadius = UDim.new(0, 12)
+    CardCorner.Parent = Card
+    
+    -- LEFT SIDE: ICON
+    local IconFrame = Instance.new("Frame")
+    IconFrame.Size = UDim2.new(0, 40, 0, 40)
+    IconFrame.Position = UDim2.new(0, 10, 0.5, -20)
+    IconFrame.BackgroundColor3 = Config.Theme.Primary
+    IconFrame.BackgroundTransparency = 0.9
+    
+    local IconCorner = Instance.new("UICorner")
+    IconCorner.CornerRadius = UDim.new(0, 8)
+    IconCorner.Parent = IconFrame
+    
     local Icon = Instance.new("TextLabel")
-    Icon.Text = string.sub(scriptData.Name, 1, 2)
-    Icon.Size = UDim2.new(0, 30, 1, 0)
-    Icon.Position = UDim2.new(0, 10, 0, 0)
+    Icon.Text = scriptData.Icon
+    Icon.Size = UDim2.new(1, 0, 1, 0)
     Icon.BackgroundTransparency = 1
-    Icon.TextColor3 = Color3.new(1, 1, 1)
+    Icon.TextColor3 = Config.Theme.Text
     Icon.Font = Enum.Font.GothamBold
     Icon.TextSize = 16
-    Icon.Parent = ButtonFrame
+    Icon.Parent = IconFrame
     
-    -- SCRIPT NAME
-    local NameLabel = Instance.new("TextLabel")
-    NameLabel.Text = scriptData.Name
-    NameLabel.Size = UDim2.new(0.6, -45, 0, 22)
-    NameLabel.Position = UDim2.new(0, 45, 0, 8)
-    NameLabel.BackgroundTransparency = 1
-    NameLabel.TextColor3 = Color3.new(1, 1, 1)
-    NameLabel.Font = Enum.Font.GothamBold
-    NameLabel.TextSize = 12
-    NameLabel.TextXAlignment = Enum.TextXAlignment.Left
-    NameLabel.Parent = ButtonFrame
+    -- RIGHT SIDE: TEXT (VERTICALLY CENTERED)
+    local TextContainer = Instance.new("Frame")
+    TextContainer.Size = UDim2.new(0, 90, 1, -20)
+    TextContainer.Position = UDim2.new(0, 60, 0, 10)
+    TextContainer.BackgroundTransparency = 1
     
-    -- DESCRIPTION
-    local DescLabel = Instance.new("TextLabel")
-    DescLabel.Text = scriptData.Desc
-    DescLabel.Size = UDim2.new(0.6, -45, 0, 18)
-    DescLabel.Position = UDim2.new(0, 45, 0, 30)
-    DescLabel.BackgroundTransparency = 1
-    DescLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
-    DescLabel.Font = Enum.Font.Gotham
-    DescLabel.TextSize = 10
-    DescLabel.TextXAlignment = Enum.TextXAlignment.Left
-    DescLabel.Parent = ButtonFrame
+    local ScriptName = Instance.new("TextLabel")
+    ScriptName.Text = scriptData.Name
+    ScriptName.Size = UDim2.new(1, 0, 0, 20)
+    ScriptName.Position = UDim2.new(0, 0, 0, 0)
+    ScriptName.BackgroundTransparency = 1
+    ScriptName.TextColor3 = Config.Theme.Text
+    ScriptName.Font = Enum.Font.GothamBold
+    ScriptName.TextSize = 12
+    ScriptName.TextXAlignment = Enum.TextXAlignment.Left
+    ScriptName.TextYAlignment = Enum.TextYAlignment.Top
+    ScriptName.Parent = TextContainer
     
-    -- EXECUTE BUTTON
-    local ExecuteBtn = Instance.new("TextButton")
-    ExecuteBtn.Name = "ExecuteBtn"
-    ExecuteBtn.Text = "▶ LOAD"
-    ExecuteBtn.Size = UDim2.new(0, 70, 0, 35) -- LEBIH LEBAR
-    ExecuteBtn.Position = UDim2.new(1, -75, 0.5, -17)
-    ExecuteBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 100)
-    ExecuteBtn.TextColor3 = Color3.new(1, 1, 1)
-    ExecuteBtn.Font = Enum.Font.GothamBold
-    ExecuteBtn.TextSize = 11
-    ExecuteBtn.Parent = ButtonFrame
+    local ScriptDesc = Instance.new("TextLabel")
+    ScriptDesc.Text = scriptData.Desc
+    ScriptDesc.Size = UDim2.new(1, 0, 0, 30)
+    ScriptDesc.Position = UDim2.new(0, 0, 0, 20)
+    ScriptDesc.BackgroundTransparency = 1
+    ScriptDesc.TextColor3 = Config.Theme.Subtext
+    ScriptDesc.Font = Enum.Font.Gotham
+    ScriptDesc.TextSize = 10
+    ScriptDesc.TextXAlignment = Enum.TextXAlignment.Left
+    ScriptDesc.TextYAlignment = Enum.TextYAlignment.Top
+    ScriptDesc.Parent = TextContainer
     
-    -- HOVER EFFECTS
-    ButtonFrame.MouseEnter:Connect(function()
-        ButtonFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
+    -- ACTION BUTTON (RIGHT SIDE)
+    local ActionBtn = Instance.new("TextButton")
+    ActionBtn.Text = "▶"
+    ActionBtn.Size = UDim2.new(0, 30, 0, 30)
+    ActionBtn.Position = UDim2.new(1, -40, 0.5, -15)
+    ActionBtn.BackgroundColor3 = Config.Theme.Primary
+    ActionBtn.TextColor3 = Color3.new(1, 1, 1)
+    ActionBtn.Font = Enum.Font.GothamBold
+    ActionBtn.TextSize = 12
+    ActionBtn.AutoButtonColor = false
+    
+    local BtnCorner = Instance.new("UICorner")
+    BtnCorner.CornerRadius = UDim.new(0, 6)
+    BtnCorner.Parent = ActionBtn
+    
+    -- HOVER EFFECT
+    Card.MouseEnter:Connect(function()
+        Card.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+        ActionBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
     end)
     
-    ButtonFrame.MouseLeave:Connect(function()
-        ButtonFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+    Card.MouseLeave:Connect(function()
+        Card.BackgroundColor3 = Config.Theme.Card
+        ActionBtn.BackgroundColor3 = Config.Theme.Primary
     end)
     
     -- CLICK FUNCTION
-    ButtonFrame.MouseButton1Click:Connect(function()
-        LoadScript(scriptData.Name, LoadStatus[scriptData.Name].url, ExecuteBtn)
+    Card.Activated:Connect(function()
+        ActionBtn.Text = "⏳"
+        task.wait(0.8)
+        ActionBtn.Text = scriptData.URL == "" and "⚠️" or "✅"
+        task.wait(0.5)
+        ActionBtn.Text = "▶"
     end)
     
-    ExecuteBtn.MouseButton1Click:Connect(function()
-        LoadScript(scriptData.Name, LoadStatus[scriptData.Name].url, ExecuteBtn)
+    ActionBtn.Activated:Connect(function()
+        Card.Activated()
     end)
     
-    ButtonFrame.Parent = ScrollFrame
+    -- ASSEMBLE CARD
+    IconFrame.Parent = Card
+    TextContainer.Parent = Card
+    ActionBtn.Parent = Card
+    Card.Parent = Content
 end
 
--- ==================== FINAL SETUP ====================
-UIListLayout.Parent = ScrollFrame
-ScrollFrame.Parent = MainFrame
-MainFrame.Parent = ScreenGui
+-- ==================== MINIMIZED APP ====================
+local MinimizedApp = Instance.new("TextButton")
+MinimizedApp.Text = ""
+MinimizedApp.Size = UDim2.new(0, 60, 0, 60)
+MinimizedApp.Position = UDim2.new(0.9, 0, 0.1, 0)
+MinimizedApp.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MinimizedApp.AutoButtonColor = false
+MinimizedApp.Visible = false
+
+local MinimizedCorner = Instance.new("UICorner")
+MinimizedCorner.CornerRadius = UDim.new(0, 12)
+
+local MinimizedIcon = Instance.new("ImageLabel")
+MinimizedIcon.Image = Config.LogoID
+MinimizedIcon.Size = UDim2.new(0.6, 0, 0.6, 0)
+MinimizedIcon.Position = UDim2.new(0.2, 0, 0.2, 0)
+MinimizedIcon.BackgroundTransparency = 1
+MinimizedIcon.ScaleType = Enum.ScaleType.Fit
+MinimizedIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+
+-- ==================== ASSEMBLE UI ====================
+WindowCorner.Parent = AppWindow
+AvatarCorner.Parent = Avatar
+MinimizeCorner.Parent = MinimizeBtn
+CloseCorner.Parent = CloseBtn
+MinimizedCorner.Parent = MinimizedApp
+
+Avatar.Parent = Header
+Username.Parent = Header
+Status.Parent = Header
+MinimizeBtn.Parent = Header
+CloseBtn.Parent = Header
+Header.Parent = AppWindow
+Content.Parent = AppWindow
+MinimizedIcon.Parent = MinimizedApp
+
+MinimizedApp.Parent = ScreenGui
+AppWindow.Parent = ScreenGui
 ScreenGui.Parent = PlayerGui
 
-UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-    ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y + 10)
-end)
+-- ==================== DRAGGING ====================
+local function SetupDragging(frame)
+    local dragging = false
+    local dragInput, dragStart, startPos
+    
+    frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+           input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = frame.Position
+            
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+    
+    frame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or 
+           input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+    
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if dragging and (input == dragInput) then
+            local delta = input.Position - dragStart
+            frame.Position = UDim2.new(
+                startPos.X.Scale,
+                startPos.X.Offset + delta.X,
+                startPos.Y.Scale,
+                startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+end
 
--- ==================== BUTTON FUNCTIONS ====================
+SetupDragging(AppWindow)
+SetupDragging(MinimizedApp)
+
+-- ==================== FUNCTIONALITY ====================
 local isMinimized = false
 
-MinimizeBtn.MouseButton1Click:Connect(function()
+MinimizeBtn.Activated:Connect(function()
     isMinimized = not isMinimized
     if isMinimized then
-        MinimizedFrame.Position = MainFrame.Position
-        MainFrame.Visible = false
-        MinimizedFrame.Visible = true
-        MinimizeBtn.Text = "□"
+        MinimizedApp.Position = AppWindow.Position
+        AppWindow.Visible = false
+        MinimizedApp.Visible = true
     else
-        MainFrame.Position = MinimizedFrame.Position
-        MainFrame.Visible = true
-        MinimizedFrame.Visible = false
-        MinimizeBtn.Text = "_"
+        AppWindow.Position = MinimizedApp.Position
+        AppWindow.Visible = true
+        MinimizedApp.Visible = false
     end
 end)
 
-MinimizedFrame.MouseButton1Click:Connect(function()
-    MainFrame.Position = MinimizedFrame.Position
-    MainFrame.Visible = true
-    MinimizedFrame.Visible = false
-    isMinimized = false
-    MinimizeBtn.Text = "_"
-end)
-
-CloseBtn.MouseButton1Click:Connect(function()
+CloseBtn.Activated:Connect(function()
     ScreenGui:Destroy()
 end)
 
--- HOTKEYS
-local UIS = game:GetService("UserInputService")
-UIS.InputBegan:Connect(function(input, processed)
-    if not processed then
-        if input.KeyCode == Enum.KeyCode.M then
-            isMinimized = not isMinimized
-            if isMinimized then
-                MinimizedFrame.Position = MainFrame.Position
-                MainFrame.Visible = false
-                MinimizedFrame.Visible = true
-                MinimizeBtn.Text = "□"
-            else
-                MainFrame.Position = MinimizedFrame.Position
-                MainFrame.Visible = true
-                MinimizedFrame.Visible = false
-                MinimizeBtn.Text = "_"
-            end
-        end
-    end
+MinimizedApp.Activated:Connect(function()
+    AppWindow.Position = MinimizedApp.Position
+    AppWindow.Visible = true
+    MinimizedApp.Visible = false
+    isMinimized = false
 end)
 
 print("========================================")
-print("🎯 PERFECT HUB LOADED!")
+print("✅ MODERN FIXED LAYOUT LOADED!")
 print("Features:")
-print("1. URL input popup when empty")
-print("2. Loading animation")
-print("3. Success/error notifications")
-print("4. Status indicators")
+print("• 2-Column Grid (Manual Positioning)")
+print("• All cards aligned properly")
+print("• Text vertically centered")
+print("• Clean responsive layout")
 print("========================================")
