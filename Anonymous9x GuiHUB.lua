@@ -1,15 +1,15 @@
--- MODERN UI HUB - FIXED LAYOUT
+-- MODERN UI HUB - HORIZONTAL SCROLL LAYOUT
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
-if PlayerGui:FindFirstChild("ModernFixed") then
-    PlayerGui.ModernFixed:Destroy()
+if PlayerGui:FindFirstChild("HorizontalHub") then
+    PlayerGui.HorizontalHub:Destroy()
 end
 
 -- ==================== CONFIG ====================
 local Config = {
-    Title = "ANONYMOUS HUB",
+    Title = "ANONYMOUS9x GUI HUB",
     LogoID = "rbxassetid://97269958324726",
     Theme = {
         Primary = Color3.fromRGB(10, 132, 255),
@@ -35,114 +35,113 @@ local Config = {
 
 -- ==================== UI SETUP ====================
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "ModernFixed"
+ScreenGui.Name = "HorizontalHub"
 ScreenGui.ResetOnSpawn = false
 
+-- MAIN WINDOW - LEBIH KECIL DAN PANJANG
 local AppWindow = Instance.new("Frame")
-AppWindow.Size = UDim2.new(0, 400, 0, 550) -- TINGGI DITAMBAH
-AppWindow.Position = UDim2.new(0.5, -200, 0.5, -275)
+AppWindow.Size = UDim2.new(0, 380, 0, 320) -- LEBAR SEDIKIT, TINGGI LEBIH PENDEK
+AppWindow.Position = UDim2.new(0.5, -190, 0.5, -160)
 AppWindow.BackgroundColor3 = Config.Theme.Background
 AppWindow.BackgroundTransparency = 0.1
 
 local WindowCorner = Instance.new("UICorner")
-WindowCorner.CornerRadius = UDim.new(0, 24)
+WindowCorner.CornerRadius = UDim.new(0, 16)
+WindowCorner.Parent = AppWindow
 
--- ==================== HEADER ====================
+-- ==================== HEADER COMPACT ====================
 local Header = Instance.new("Frame")
-Header.Size = UDim2.new(1, 0, 0, 70)
+Header.Size = UDim2.new(1, 0, 0, 50) -- LEBIH PENDEK
 Header.BackgroundTransparency = 1
 
 local Avatar = Instance.new("ImageLabel")
 Avatar.Image = Config.LogoID
-Avatar.Size = UDim2.new(0, 50, 0, 50)
-Avatar.Position = UDim2.new(0, 20, 0.5, -25)
+Avatar.Size = UDim2.new(0, 35, 0, 35) -- LEBIH KECIL
+Avatar.Position = UDim2.new(0, 15, 0.5, -17)
 Avatar.BackgroundColor3 = Config.Theme.Primary
 Avatar.BackgroundTransparency = 0.8
 
 local AvatarCorner = Instance.new("UICorner")
 AvatarCorner.CornerRadius = UDim.new(1, 0)
+AvatarCorner.Parent = Avatar
 
 local Username = Instance.new("TextLabel")
 Username.Text = Config.Title
-Username.Size = UDim2.new(0.6, 0, 0, 24)
-Username.Position = UDim2.new(0, 80, 0, 18)
+Username.Size = UDim2.new(0.5, 0, 0, 20)
+Username.Position = UDim2.new(0, 60, 0, 10)
 Username.BackgroundTransparency = 1
 Username.TextColor3 = Config.Theme.Text
 Username.Font = Enum.Font.GothamBold
-Username.TextSize = 18
+Username.TextSize = 16
 Username.TextXAlignment = Enum.TextXAlignment.Left
 
 local Status = Instance.new("TextLabel")
-Status.Text = "Script Hub • 10 Features"
-Status.Size = UDim2.new(0.6, 0, 0, 20)
-Status.Position = UDim2.new(0, 80, 0, 42)
+Status.Text = "10 Scripts"
+Status.Size = UDim2.new(0.5, 0, 0, 16)
+Status.Position = UDim2.new(0, 60, 0, 30)
 Status.BackgroundTransparency = 1
 Status.TextColor3 = Config.Theme.Subtext
 Status.Font = Enum.Font.Gotham
-Status.TextSize = 12
+Status.TextSize = 11
 Status.TextXAlignment = Enum.TextXAlignment.Left
 
 local MinimizeBtn = Instance.new("TextButton")
 MinimizeBtn.Text = "−"
-MinimizeBtn.Size = UDim2.new(0, 32, 0, 32)
-MinimizeBtn.Position = UDim2.new(1, -74, 0.5, -16)
+MinimizeBtn.Size = UDim2.new(0, 28, 0, 28)
+MinimizeBtn.Position = UDim2.new(1, -64, 0.5, -14)
 MinimizeBtn.BackgroundColor3 = Config.Theme.Card
 MinimizeBtn.TextColor3 = Config.Theme.Text
 MinimizeBtn.Font = Enum.Font.GothamBold
-MinimizeBtn.TextSize = 16
+MinimizeBtn.TextSize = 14
 
 local MinimizeCorner = Instance.new("UICorner")
-MinimizeCorner.CornerRadius = UDim.new(0, 8)
+MinimizeCorner.CornerRadius = UDim.new(0, 6)
+MinimizeCorner.Parent = MinimizeBtn
 
 local CloseBtn = Instance.new("TextButton")
 CloseBtn.Text = "×"
-CloseBtn.Size = UDim2.new(0, 32, 0, 32)
-CloseBtn.Position = UDim2.new(1, -36, 0.5, -16)
+CloseBtn.Size = UDim2.new(0, 28, 0, 28)
+CloseBtn.Position = UDim2.new(1, -30, 0.5, -14)
 CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 59, 48)
 CloseBtn.TextColor3 = Color3.new(1, 1, 1)
 CloseBtn.Font = Enum.Font.GothamBold
-CloseBtn.TextSize = 16
+CloseBtn.TextSize = 14
 
 local CloseCorner = Instance.new("UICorner")
-CloseCorner.CornerRadius = UDim.new(0, 8)
+CloseCorner.CornerRadius = UDim.new(0, 6)
+CloseCorner.Parent = CloseBtn
 
--- ==================== SCRIPT GRID (MANUAL 2 COLUMNS) ====================
-local Content = Instance.new("Frame")
-Content.Size = UDim2.new(1, -40, 1, -100)
-Content.Position = UDim2.new(0, 20, 0, 80)
-Content.BackgroundTransparency = 1
+-- ==================== HORIZONTAL SCROLL AREA ====================
+local ScrollContainer = Instance.new("Frame")
+ScrollContainer.Size = UDim2.new(1, -20, 0, 220) -- TINGGI UNTUK KARTU
+ScrollContainer.Position = UDim2.new(0, 10, 0, 60)
+ScrollContainer.BackgroundTransparency = 1
 
-local SectionTitle = Instance.new("TextLabel")
-SectionTitle.Text = "AVAILABLE SCRIPTS"
-SectionTitle.Size = UDim2.new(1, 0, 0, 30)
-SectionTitle.BackgroundTransparency = 1
-SectionTitle.TextColor3 = Config.Theme.Subtext
-SectionTitle.Font = Enum.Font.GothamBold
-SectionTitle.TextSize = 12
-SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
-SectionTitle.Parent = Content
+-- HORIZONTAL SCROLLING FRAME
+local ScrollFrame = Instance.new("ScrollingFrame")
+ScrollFrame.Size = UDim2.new(1, 0, 1, 0)
+ScrollFrame.BackgroundTransparency = 1
+ScrollFrame.ScrollBarThickness = 4
+ScrollFrame.ScrollBarImageColor3 = Config.Theme.Primary
+ScrollFrame.ScrollingDirection = Enum.ScrollingDirection.X -- HORIZONTAL SCROLL
+ScrollFrame.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Left
+ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- Akan diupdate
 
--- GRID SETTINGS
+-- HORIZONTAL CONTAINER
+local CardContainer = Instance.new("Frame")
+CardContainer.Size = UDim2.new(0, 0, 1, 0) -- Width akan diupdate
+CardContainer.BackgroundTransparency = 1
+
+-- ==================== CREATE HORIZONTAL CARDS ====================
 local CARD_WIDTH = 160
-local CARD_HEIGHT = 80
-local CARD_MARGIN_X = 15
-local CARD_MARGIN_Y = 12
-local COLUMNS = 2
+local CARD_HEIGHT = 200
+local CARD_MARGIN = 10
 
--- CREATE CARDS WITH MANUAL POSITIONING
 for i, scriptData in ipairs(Config.Scripts) do
-    -- CALCULATE GRID POSITION
-    local col = (i - 1) % COLUMNS
-    local row = math.floor((i - 1) / COLUMNS)
-    
-    local xPos = col * (CARD_WIDTH + CARD_MARGIN_X)
-    local yPos = 30 + (row * (CARD_HEIGHT + CARD_MARGIN_Y))
-    
-    -- CREATE CARD
     local Card = Instance.new("TextButton")
     Card.Text = ""
     Card.Size = UDim2.new(0, CARD_WIDTH, 0, CARD_HEIGHT)
-    Card.Position = UDim2.new(0, xPos, 0, yPos)
+    Card.Position = UDim2.new(0, (i-1) * (CARD_WIDTH + CARD_MARGIN), 0, 0)
     Card.BackgroundColor3 = Config.Theme.Card
     Card.AutoButtonColor = false
     
@@ -150,61 +149,62 @@ for i, scriptData in ipairs(Config.Scripts) do
     CardCorner.CornerRadius = UDim.new(0, 12)
     CardCorner.Parent = Card
     
-    -- LEFT SIDE: ICON
-    local IconFrame = Instance.new("Frame")
-    IconFrame.Size = UDim2.new(0, 40, 0, 40)
-    IconFrame.Position = UDim2.new(0, 10, 0.5, -20)
-    IconFrame.BackgroundColor3 = Config.Theme.Primary
-    IconFrame.BackgroundTransparency = 0.9
+    -- CARD HEADER (WARNA ACCENT)
+    local CardHeader = Instance.new("Frame")
+    CardHeader.Size = UDim2.new(1, 0, 0, 40)
+    CardHeader.BackgroundColor3 = Config.Theme.Primary
+    CardHeader.BackgroundTransparency = 0.2
     
-    local IconCorner = Instance.new("UICorner")
-    IconCorner.CornerRadius = UDim.new(0, 8)
-    IconCorner.Parent = IconFrame
+    local HeaderCorner = Instance.new("UICorner")
+    HeaderCorner.CornerRadius = UDim.new(0, 12)
+    HeaderCorner.Parent = CardHeader
     
+    -- ICON DI HEADER
     local Icon = Instance.new("TextLabel")
     Icon.Text = scriptData.Icon
-    Icon.Size = UDim2.new(1, 0, 1, 0)
+    Icon.Size = UDim2.new(0, 30, 0, 30)
+    Icon.Position = UDim2.new(0.5, -15, 0.5, -15)
     Icon.BackgroundTransparency = 1
     Icon.TextColor3 = Config.Theme.Text
     Icon.Font = Enum.Font.GothamBold
-    Icon.TextSize = 16
-    Icon.Parent = IconFrame
+    Icon.TextSize = 20
+    Icon.Parent = CardHeader
     
-    -- RIGHT SIDE: TEXT (VERTICALLY CENTERED)
-    local TextContainer = Instance.new("Frame")
-    TextContainer.Size = UDim2.new(0, 90, 1, -20)
-    TextContainer.Position = UDim2.new(0, 60, 0, 10)
-    TextContainer.BackgroundTransparency = 1
-    
+    -- SCRIPT NAME (DI BAWAH HEADER)
     local ScriptName = Instance.new("TextLabel")
     ScriptName.Text = scriptData.Name
-    ScriptName.Size = UDim2.new(1, 0, 0, 20)
-    ScriptName.Position = UDim2.new(0, 0, 0, 0)
+    ScriptName.Size = UDim2.new(1, -20, 0, 30)
+    ScriptName.Position = UDim2.new(0, 10, 0, 50)
     ScriptName.BackgroundTransparency = 1
     ScriptName.TextColor3 = Config.Theme.Text
     ScriptName.Font = Enum.Font.GothamBold
-    ScriptName.TextSize = 12
+    ScriptName.TextSize = 14
     ScriptName.TextXAlignment = Enum.TextXAlignment.Left
-    ScriptName.TextYAlignment = Enum.TextYAlignment.Top
-    ScriptName.Parent = TextContainer
+    ScriptName.Parent = Card
+    
+    -- DESCRIPTION (MULTI-LINE)
+    local DescFrame = Instance.new("Frame")
+    DescFrame.Size = UDim2.new(1, -20, 0, 70)
+    DescFrame.Position = UDim2.new(0, 10, 0, 80)
+    DescFrame.BackgroundTransparency = 1
     
     local ScriptDesc = Instance.new("TextLabel")
     ScriptDesc.Text = scriptData.Desc
-    ScriptDesc.Size = UDim2.new(1, 0, 0, 30)
-    ScriptDesc.Position = UDim2.new(0, 0, 0, 20)
+    ScriptDesc.Size = UDim2.new(1, 0, 1, 0)
     ScriptDesc.BackgroundTransparency = 1
     ScriptDesc.TextColor3 = Config.Theme.Subtext
     ScriptDesc.Font = Enum.Font.Gotham
-    ScriptDesc.TextSize = 10
+    ScriptDesc.TextSize = 11
     ScriptDesc.TextXAlignment = Enum.TextXAlignment.Left
     ScriptDesc.TextYAlignment = Enum.TextYAlignment.Top
-    ScriptDesc.Parent = TextContainer
+    ScriptDesc.TextWrapped = true
+    ScriptDesc.Parent = DescFrame
     
-    -- ACTION BUTTON (RIGHT SIDE)
+    -- ACTION BUTTON (DI BAWAH)
     local ActionBtn = Instance.new("TextButton")
-    ActionBtn.Text = "▶"
-    ActionBtn.Size = UDim2.new(0, 30, 0, 30)
-    ActionBtn.Position = UDim2.new(1, -40, 0.5, -15)
+    ActionBtn.Text = "▶ LOAD"
+    ActionBtn.Size = UDim2.new(0.8, 0, 0, 35)
+    ActionBtn.Position = UDim2.new(0.1, 0, 1, -45)
     ActionBtn.BackgroundColor3 = Config.Theme.Primary
     ActionBtn.TextColor3 = Color3.new(1, 1, 1)
     ActionBtn.Font = Enum.Font.GothamBold
@@ -212,27 +212,107 @@ for i, scriptData in ipairs(Config.Scripts) do
     ActionBtn.AutoButtonColor = false
     
     local BtnCorner = Instance.new("UICorner")
-    BtnCorner.CornerRadius = UDim.new(0, 6)
+    BtnCorner.CornerRadius = UDim.new(0, 8)
     BtnCorner.Parent = ActionBtn
+    
+    -- STATUS INDICATOR
+    local StatusDot = Instance.new("Frame")
+    StatusDot.Size = UDim2.new(0, 8, 0, 8)
+    StatusDot.Position = UDim2.new(1, -15, 0, 10)
+    StatusDot.BackgroundColor3 = Color3.fromRGB(255, 50, 50) -- RED = Not loaded
+    StatusDot.BorderSizePixel = 0
+    
+    local StatusCorner = Instance.new("UICorner")
+    StatusCorner.CornerRadius = UDim.new(1, 0)
+    StatusCorner.Parent = StatusDot
     
     -- HOVER EFFECT
     Card.MouseEnter:Connect(function()
         Card.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+        CardHeader.BackgroundTransparency = 0
         ActionBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
     end)
     
     Card.MouseLeave:Connect(function()
         Card.BackgroundColor3 = Config.Theme.Card
+        CardHeader.BackgroundTransparency = 0.2
         ActionBtn.BackgroundColor3 = Config.Theme.Primary
     end)
     
+    -- URL MANAGEMENT SYSTEM
+    local url = scriptData.URL
+    local function UpdateStatus(color)
+        StatusDot.BackgroundColor3 = color
+    end
+    
     -- CLICK FUNCTION
     Card.Activated:Connect(function()
-        ActionBtn.Text = "⏳"
-        task.wait(0.8)
-        ActionBtn.Text = scriptData.URL == "" and "⚠️" or "✅"
-        task.wait(0.5)
-        ActionBtn.Text = "▶"
+        if url == "" or not url:find("http") then
+            -- BUAT SIMPLE INPUT
+            local InputFrame = Instance.new("Frame")
+            InputFrame.Size = UDim2.new(0, 250, 0, 140)
+            InputFrame.Position = UDim2.new(0.5, -125, 0.5, -70)
+            InputFrame.BackgroundColor3 = Config.Theme.Card
+            InputFrame.Parent = ScreenGui
+            
+            local InputTitle = Instance.new("TextLabel")
+            InputTitle.Text = "URL for " .. scriptData.Name
+            InputTitle.Size = UDim2.new(1, 0, 0, 40)
+            InputTitle.BackgroundColor3 = Config.Theme.Primary
+            InputTitle.TextColor3 = Color3.new(1, 1, 1)
+            InputTitle.Font = Enum.Font.GothamBold
+            InputTitle.TextSize = 14
+            InputTitle.Parent = InputFrame
+            
+            local InputBox = Instance.new("TextBox")
+            InputBox.PlaceholderText = "https://pastebin.com/raw/..."
+            InputBox.Size = UDim2.new(1, -20, 0, 30)
+            InputBox.Position = UDim2.new(0, 10, 0, 50)
+            InputBox.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
+            InputBox.TextColor3 = Color3.new(1, 1, 1)
+            InputBox.Font = Enum.Font.Gotham
+            InputBox.TextSize = 12
+            InputBox.Parent = InputFrame
+            
+            local SaveBtn = Instance.new("TextButton")
+            SaveBtn.Text = "SAVE URL"
+            SaveBtn.Size = UDim2.new(0, 100, 0, 30)
+            SaveBtn.Position = UDim2.new(0.5, -50, 1, -40)
+            SaveBtn.BackgroundColor3 = Config.Theme.Primary
+            SaveBtn.TextColor3 = Color3.new(1, 1, 1)
+            SaveBtn.Font = Enum.Font.GothamBold
+            SaveBtn.TextSize = 12
+            SaveBtn.Parent = InputFrame
+            
+            SaveBtn.Activated:Connect(function()
+                if InputBox.Text ~= "" then
+                    url = InputBox.Text
+                    UpdateStatus(Color3.fromRGB(255, 200, 0)) -- YELLOW = Has URL
+                end
+                InputFrame:Destroy()
+            end)
+            
+            return
+        end
+        
+        -- LOADING ANIMATION
+        ActionBtn.Text = "⏳ LOADING..."
+        UpdateStatus(Color3.fromRGB(255, 200, 0)) -- YELLOW = Loading
+        
+        -- SIMULASI LOAD
+        task.wait(1.2)
+        
+        -- CEK JIKA URL VALID
+        if url:find("http") then
+            ActionBtn.Text = "✅ LOADED"
+            UpdateStatus(Color3.fromRGB(0, 255, 0)) -- GREEN = Loaded
+        else
+            ActionBtn.Text = "❌ ERROR"
+            UpdateStatus(Color3.fromRGB(255, 50, 50)) -- RED = Error
+        end
+        
+        task.wait(1)
+        ActionBtn.Text = "▶ LOAD"
     end)
     
     ActionBtn.Activated:Connect(function()
@@ -240,23 +320,28 @@ for i, scriptData in ipairs(Config.Scripts) do
     end)
     
     -- ASSEMBLE CARD
-    IconFrame.Parent = Card
-    TextContainer.Parent = Card
+    CardHeader.Parent = Card
+    DescFrame.Parent = Card
     ActionBtn.Parent = Card
-    Card.Parent = Content
+    StatusDot.Parent = Card
+    Card.Parent = CardContainer
 end
+
+-- UPDATE CONTAINER WIDTH BERDASARKAN JUMLAH CARD
+CardContainer.Size = UDim2.new(0, #Config.Scripts * (CARD_WIDTH + CARD_MARGIN), 1, 0)
 
 -- ==================== MINIMIZED APP ====================
 local MinimizedApp = Instance.new("TextButton")
 MinimizedApp.Text = ""
-MinimizedApp.Size = UDim2.new(0, 60, 0, 60)
-MinimizedApp.Position = UDim2.new(0.9, 0, 0.1, 0)
+MinimizedApp.Size = UDim2.new(0, 50, 0, 50)
+MinimizedApp.Position = UDim2.new(0.85, 0, 0.1, 0)
 MinimizedApp.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 MinimizedApp.AutoButtonColor = false
 MinimizedApp.Visible = false
 
 local MinimizedCorner = Instance.new("UICorner")
-MinimizedCorner.CornerRadius = UDim.new(0, 12)
+MinimizedCorner.CornerRadius = UDim.new(0, 10)
+MinimizedCorner.Parent = MinimizedApp
 
 local MinimizedIcon = Instance.new("ImageLabel")
 MinimizedIcon.Image = Config.LogoID
@@ -265,31 +350,31 @@ MinimizedIcon.Position = UDim2.new(0.2, 0, 0.2, 0)
 MinimizedIcon.BackgroundTransparency = 1
 MinimizedIcon.ScaleType = Enum.ScaleType.Fit
 MinimizedIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+MinimizedIcon.Parent = MinimizedApp
 
 -- ==================== ASSEMBLE UI ====================
-WindowCorner.Parent = AppWindow
-AvatarCorner.Parent = Avatar
-MinimizeCorner.Parent = MinimizeBtn
-CloseCorner.Parent = CloseBtn
-MinimizedCorner.Parent = MinimizedApp
-
 Avatar.Parent = Header
 Username.Parent = Header
 Status.Parent = Header
 MinimizeBtn.Parent = Header
 CloseBtn.Parent = Header
 Header.Parent = AppWindow
-Content.Parent = AppWindow
-MinimizedIcon.Parent = MinimizedApp
+
+CardContainer.Parent = ScrollFrame
+ScrollFrame.Parent = ScrollContainer
+ScrollContainer.Parent = AppWindow
 
 MinimizedApp.Parent = ScreenGui
 AppWindow.Parent = ScreenGui
 ScreenGui.Parent = PlayerGui
 
+-- UPDATE SCROLL CANVAS SIZE
+ScrollFrame.CanvasSize = UDim2.new(0, CardContainer.AbsoluteSize.X, 0, 0)
+
 -- ==================== DRAGGING ====================
 local function SetupDragging(frame)
     local dragging = false
-    local dragInput, dragStart, startPos
+    local dragStart, startPos
     
     frame.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or 
@@ -297,31 +382,24 @@ local function SetupDragging(frame)
             dragging = true
             dragStart = input.Position
             startPos = frame.Position
-            
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
         end
     end)
     
     frame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or 
-           input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or 
+                         input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            frame.Position = UDim2.new(
+                startPos.X.Scale, startPos.X.Offset + delta.X,
+                startPos.Y.Scale, startPos.Y.Offset + delta.Y
+            )
         end
     end)
     
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if dragging and (input == dragInput) then
-            local delta = input.Position - dragStart
-            frame.Position = UDim2.new(
-                startPos.X.Scale,
-                startPos.X.Offset + delta.X,
-                startPos.Y.Scale,
-                startPos.Y.Offset + delta.Y
-            )
+    frame.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+           input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
         end
     end)
 end
@@ -338,10 +416,12 @@ MinimizeBtn.Activated:Connect(function()
         MinimizedApp.Position = AppWindow.Position
         AppWindow.Visible = false
         MinimizedApp.Visible = true
+        MinimizeBtn.Text = "□"
     else
         AppWindow.Position = MinimizedApp.Position
         AppWindow.Visible = true
         MinimizedApp.Visible = false
+        MinimizeBtn.Text = "−"
     end
 end)
 
@@ -354,13 +434,12 @@ MinimizedApp.Activated:Connect(function()
     AppWindow.Visible = true
     MinimizedApp.Visible = false
     isMinimized = false
+    MinimizeBtn.Text = "−"
 end)
 
 print("========================================")
-print("✅ MODERN FIXED LAYOUT LOADED!")
-print("Features:")
-print("• 2-Column Grid (Manual Positioning)")
-print("• All cards aligned properly")
-print("• Text vertically centered")
-print("• Clean responsive layout")
+print("ANONYMOUS9X HUB GUI")
+print("Layout: Horizontal scroll (left to right)")
+print("Size: 380x320 (Compact)")
+print("FOLLOW TIKTOK: ANONYMOUS9X")
 print("========================================")
