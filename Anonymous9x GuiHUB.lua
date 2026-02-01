@@ -20,7 +20,7 @@ local Config = {
         Subtext = Color3.fromRGB(142, 142, 147)
     },
     Scripts = {
-        {Name = "Hybrid Attack", Icon = "", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "spam attack v1 auto attack 100k can't be changed (CHAOS)"},
+        {Name = "ESP", Icon = "👁️", URL = "", Desc = "See through walls"},
         {Name = "HIDE NAME", Icon = "👻", URL = "", Desc = "Hide display name"},
         {Name = "GLOW", Icon = "✨", URL = "", Desc = "Glowing effect"},
         {Name = "SKYBOX", Icon = "🌌", URL = "", Desc = "Change skybox"},
@@ -438,8 +438,8 @@ MinimizedApp.Activated:Connect(function()
 end)
 
 print("========================================")
-print("ANONYMOUS9X HUB GUI")
+print("↔️ HORIZONTAL HUB LOADED!")
 print("Layout: Horizontal scroll (left to right)")
 print("Size: 380x320 (Compact)")
-print("FOLLOW TIKTOK: ANONYMOUS9X")
+print("Features: URL manager, status indicators")
 print("========================================")
