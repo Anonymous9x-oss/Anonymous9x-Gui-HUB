@@ -1,4 +1,4 @@
--- MODERN UI HUB - HORIZONTAL SCROLL LAYOUT
+-- MODERN UI HUB - HORIZONTAL SCROLL LAYOUT WITH SAFE LOADER
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
@@ -9,7 +9,7 @@ end
 
 -- ==================== CONFIG ====================
 local Config = {
-    Title = "ANONYMOUS9x GUI HUB",
+    Title = "ANONYMOUS HUB",
     LogoID = "rbxassetid://97269958324726",
     Theme = {
         Primary = Color3.fromRGB(10, 132, 255),
@@ -20,7 +20,7 @@ local Config = {
         Subtext = Color3.fromRGB(142, 142, 147)
     },
     Scripts = {
-        {Name = "Hybrid Attack", Icon = "👁️", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "spam attack v1 auto attack 100k can't be changed"},
+        {Name = "ESP", Icon = "👁️", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "See through walls"},
         {Name = "HIDE NAME", Icon = "👻", URL = "", Desc = "Hide display name"},
         {Name = "GLOW", Icon = "✨", URL = "", Desc = "Glowing effect"},
         {Name = "SKYBOX", Icon = "🌌", URL = "", Desc = "Change skybox"},
@@ -32,6 +32,188 @@ local Config = {
         {Name = "AIMBOT", Icon = "🎯", URL = "", Desc = "Auto aim"}
     }
 }
+
+-- ==================== SAFE SCRIPT LOADER ====================
+local function SafeLoadScript(url, button, statusDot)
+    if url == "" or not url:find("http") then
+        -- BUAT SIMPLE INPUT
+        local InputFrame = Instance.new("Frame")
+        InputFrame.Size = UDim2.new(0, 250, 0, 140)
+        InputFrame.Position = UDim2.new(0.5, -125, 0.5, -70)
+        InputFrame.BackgroundColor3 = Config.Theme.Card
+        InputFrame.Parent = script.Parent
+        
+        local InputTitle = Instance.new("TextLabel")
+        InputTitle.Text = "URL Required"
+        InputTitle.Size = UDim2.new(1, 0, 0, 40)
+        InputTitle.BackgroundColor3 = Config.Theme.Primary
+        InputTitle.TextColor3 = Color3.new(1, 1, 1)
+        InputTitle.Font = Enum.Font.GothamBold
+        InputTitle.TextSize = 14
+        InputTitle.Parent = InputFrame
+        
+        local InputBox = Instance.new("TextBox")
+        InputBox.PlaceholderText = "https://pastebin.com/raw/..."
+        InputBox.Size = UDim2.new(1, -20, 0, 30)
+        InputBox.Position = UDim2.new(0, 10, 0, 50)
+        InputBox.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
+        InputBox.TextColor3 = Color3.new(1, 1, 1)
+        InputBox.Font = Enum.Font.Gotham
+        InputBox.TextSize = 12
+        InputBox.Parent = InputFrame
+        
+        local SaveBtn = Instance.new("TextButton")
+        SaveBtn.Text = "SAVE URL"
+        SaveBtn.Size = UDim2.new(0, 100, 0, 30)
+        SaveBtn.Position = UDim2.new(0.5, -50, 1, -40)
+        SaveBtn.BackgroundColor3 = Config.Theme.Primary
+        SaveBtn.TextColor3 = Color3.new(1, 1, 1)
+        SaveBtn.Font = Enum.Font.GothamBold
+        SaveBtn.TextSize = 12
+        SaveBtn.Parent = InputFrame
+        
+        SaveBtn.Activated:Connect(function()
+            if InputBox.Text ~= "" then
+                url = InputBox.Text
+                if statusDot then
+                    statusDot.BackgroundColor3 = Color3.fromRGB(255, 200, 0) -- YELLOW = Has URL
+                end
+            end
+            InputFrame:Destroy()
+        end)
+        
+        return
+    end
+    
+    -- LOADING STATE
+    button.Text = "⏳"
+    button.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+    if statusDot then
+        statusDot.BackgroundColor3 = Color3.fromRGB(255, 200, 0) -- YELLOW = Loading
+    end
+    
+    -- SAFE EXECUTION
+    local success, errorMsg = pcall(function()
+        -- Download script
+        local scriptSource = game:HttpGet(url, true)
+        
+        if not scriptSource or #scriptSource < 10 then
+            error("Script source is empty or too short")
+        end
+        
+        -- Create protected environment
+        local protectedEnv = {
+            game = game,
+            workspace = workspace,
+            Players = game:GetService("Players"),
+            LocalPlayer = game.Players.LocalPlayer,
+            print = function(...)
+                print("[HUB SCRIPT]", ...)
+            end,
+            warn = function(...)
+                warn("[HUB SCRIPT]", ...)
+            end,
+            wait = task.wait,
+            task = task,
+            spawn = task.spawn,
+            delay = task.delay
+        }
+        
+        -- Set environment and execute
+        local func, loadError = loadstring(scriptSource)
+        if not func then
+            error("Loadstring error: " .. tostring(loadError))
+        end
+        
+        setfenv(func, setmetatable(protectedEnv, {
+            __index = function(self, key)
+                -- Prevent access to dangerous objects
+                local forbidden = {
+                    "ServerScriptService",
+                    "ServerStorage",
+                    "ReplicatedFirst",
+                    "Script",
+                    "LocalScript",
+                    "ModuleScript"
+                }
+                
+                for _, name in ipairs(forbidden) do
+                    if key == name then
+                        error("Access to " .. name .. " is not allowed")
+                    end
+                end
+                
+                -- Fall back to original environment
+                return getfenv()[key]
+            end
+        }))
+        
+        func() -- Execute the script
+        return true
+    end)
+    
+    -- UPDATE UI BASED ON RESULT
+    if success then
+        button.Text = "✅"
+        button.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+        if statusDot then
+            statusDot.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- GREEN = Success
+        end
+        
+        -- Success notification
+        local notif = Instance.new("Frame")
+        notif.Size = UDim2.new(0, 200, 0, 50)
+        notif.Position = UDim2.new(0.5, -100, 0.8, 0)
+        notif.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+        notif.Parent = script.Parent
+        
+        local notifText = Instance.new("TextLabel")
+        notifText.Text = "✅ Script loaded!"
+        notifText.Size = UDim2.new(1, 0, 1, 0)
+        notifText.BackgroundTransparency = 1
+        notifText.TextColor3 = Color3.new(1, 1, 1)
+        notifText.Font = Enum.Font.GothamBold
+        notifText.TextSize = 14
+        notifText.Parent = notif
+        
+        task.wait(2)
+        notif:Destroy()
+        task.wait(0.5)
+    else
+        button.Text = "❌"
+        button.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+        if statusDot then
+            statusDot.BackgroundColor3 = Color3.fromRGB(255, 50, 50) -- RED = Error
+        end
+        
+        -- Error notification
+        local errorFrame = Instance.new("Frame")
+        errorFrame.Size = UDim2.new(0, 250, 0, 80)
+        errorFrame.Position = UDim2.new(0.5, -125, 0.8, 0)
+        errorFrame.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+        errorFrame.Parent = script.Parent
+        
+        local errorText = Instance.new("TextLabel")
+        errorText.Text = "❌ Script Error:\n" .. (errorMsg or "Unknown error")
+        errorText.Size = UDim2.new(1, -10, 1, -10)
+        errorText.Position = UDim2.new(0, 5, 0, 5)
+        errorText.BackgroundTransparency = 1
+        errorText.TextColor3 = Color3.new(1, 1, 1)
+        errorText.Font = Enum.Font.Gotham
+        errorText.TextSize = 11
+        errorText.TextWrapped = true
+        errorText.Parent = errorFrame
+        
+        task.wait(3)
+        errorFrame:Destroy()
+        task.wait(0.5)
+        
+        warn("[HUB ERROR]", errorMsg)
+    end
+    
+    button.Text = "▶ LOAD"
+    button.BackgroundColor3 = Config.Theme.Primary
+end
 
 -- ==================== UI SETUP ====================
 local ScreenGui = Instance.new("ScreenGui")
@@ -239,84 +421,13 @@ for i, scriptData in ipairs(Config.Scripts) do
         ActionBtn.BackgroundColor3 = Config.Theme.Primary
     end)
     
-    -- URL MANAGEMENT SYSTEM
-    local url = scriptData.URL
-    local function UpdateStatus(color)
-        StatusDot.BackgroundColor3 = color
-    end
-    
-    -- CLICK FUNCTION
+    -- CLICK FUNCTION (FIXED VERSION)
     Card.Activated:Connect(function()
-        if url == "" or not url:find("http") then
-            -- BUAT SIMPLE INPUT
-            local InputFrame = Instance.new("Frame")
-            InputFrame.Size = UDim2.new(0, 250, 0, 140)
-            InputFrame.Position = UDim2.new(0.5, -125, 0.5, -70)
-            InputFrame.BackgroundColor3 = Config.Theme.Card
-            InputFrame.Parent = ScreenGui
-            
-            local InputTitle = Instance.new("TextLabel")
-            InputTitle.Text = "URL for " .. scriptData.Name
-            InputTitle.Size = UDim2.new(1, 0, 0, 40)
-            InputTitle.BackgroundColor3 = Config.Theme.Primary
-            InputTitle.TextColor3 = Color3.new(1, 1, 1)
-            InputTitle.Font = Enum.Font.GothamBold
-            InputTitle.TextSize = 14
-            InputTitle.Parent = InputFrame
-            
-            local InputBox = Instance.new("TextBox")
-            InputBox.PlaceholderText = "https://pastebin.com/raw/..."
-            InputBox.Size = UDim2.new(1, -20, 0, 30)
-            InputBox.Position = UDim2.new(0, 10, 0, 50)
-            InputBox.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
-            InputBox.TextColor3 = Color3.new(1, 1, 1)
-            InputBox.Font = Enum.Font.Gotham
-            InputBox.TextSize = 12
-            InputBox.Parent = InputFrame
-            
-            local SaveBtn = Instance.new("TextButton")
-            SaveBtn.Text = "SAVE URL"
-            SaveBtn.Size = UDim2.new(0, 100, 0, 30)
-            SaveBtn.Position = UDim2.new(0.5, -50, 1, -40)
-            SaveBtn.BackgroundColor3 = Config.Theme.Primary
-            SaveBtn.TextColor3 = Color3.new(1, 1, 1)
-            SaveBtn.Font = Enum.Font.GothamBold
-            SaveBtn.TextSize = 12
-            SaveBtn.Parent = InputFrame
-            
-            SaveBtn.Activated:Connect(function()
-                if InputBox.Text ~= "" then
-                    url = InputBox.Text
-                    UpdateStatus(Color3.fromRGB(255, 200, 0)) -- YELLOW = Has URL
-                end
-                InputFrame:Destroy()
-            end)
-            
-            return
-        end
-        
-        -- LOADING ANIMATION
-        ActionBtn.Text = "⏳ LOADING..."
-        UpdateStatus(Color3.fromRGB(255, 200, 0)) -- YELLOW = Loading
-        
-        -- SIMULASI LOAD
-        task.wait(1.2)
-        
-        -- CEK JIKA URL VALID
-        if url:find("http") then
-            ActionBtn.Text = "✅ LOADED"
-            UpdateStatus(Color3.fromRGB(0, 255, 0)) -- GREEN = Loaded
-        else
-            ActionBtn.Text = "❌ ERROR"
-            UpdateStatus(Color3.fromRGB(255, 50, 50)) -- RED = Error
-        end
-        
-        task.wait(1)
-        ActionBtn.Text = "▶ LOAD"
+        SafeLoadScript(scriptData.URL, ActionBtn, StatusDot)
     end)
     
     ActionBtn.Activated:Connect(function()
-        Card.Activated()
+        SafeLoadScript(scriptData.URL, ActionBtn, StatusDot)
     end)
     
     -- ASSEMBLE CARD
@@ -438,8 +549,8 @@ MinimizedApp.Activated:Connect(function()
 end)
 
 print("========================================")
-print("↔️ HORIZONTAL HUB LOADED!")
-print("Layout: Horizontal scroll (left to right)")
-print("Size: 380x320 (Compact)")
-print("Features: URL manager, status indicators")
+print("↔️ HORIZONTAL HUB - FIXED LOADER!")
+print("GUI: Same horizontal layout")
+print("Loader: Protected environment")
+print("Error handling: Safe execution")
 print("========================================")
