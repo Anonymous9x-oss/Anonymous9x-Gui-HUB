@@ -9,7 +9,7 @@ end
 
 -- ==================== CONFIG ====================
 local Config = {
-    Title = "ANONYMOUS HUB",
+    Title = "ANONYMOUS9x GUI VIP",
     LogoID = "rbxassetid://97269958324726",
     Theme = {
         Primary = Color3.fromRGB(10, 132, 255),
@@ -20,7 +20,7 @@ local Config = {
         Subtext = Color3.fromRGB(142, 142, 147)
     },
     Scripts = {
-        {Name = "ESP", Icon = "👁️", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "See through walls"},
+        {Name = "Hybrid Attack", Icon = "👁️", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "spam attack v1 auto attack 100k can't be changed. CHAOS"},
         {Name = "HIDE NAME", Icon = "👻", URL = "", Desc = "Hide display name"},
         {Name = "GLOW", Icon = "✨", URL = "", Desc = "Glowing effect"},
         {Name = "SKYBOX", Icon = "🌌", URL = "", Desc = "Change skybox"},
@@ -258,7 +258,7 @@ Username.TextSize = 16
 Username.TextXAlignment = Enum.TextXAlignment.Left
 
 local Status = Instance.new("TextLabel")
-Status.Text = "10 Scripts"
+Status.Text = "FULL FITUR V1 || By Anonymous9x"
 Status.Size = UDim2.new(0.5, 0, 0, 16)
 Status.Position = UDim2.new(0, 60, 0, 30)
 Status.BackgroundTransparency = 1
