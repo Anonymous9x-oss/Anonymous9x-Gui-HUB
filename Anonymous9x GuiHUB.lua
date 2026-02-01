@@ -20,9 +20,9 @@ local Config = {
         Subtext = Color3.fromRGB(142, 142, 147)
     },
     Scripts = {
-        {Name = "Hybrid Attack", Icon = "Chaos", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "spam attack v1 auto attack 100k can't be changed. CHAOS"},
-        {Name = "HIDE NAME", Icon = "👻", URL = "", Desc = "Hide display name"},
-        {Name = "GLOW", Icon = "✨", URL = "", Desc = "Glowing effect"},
+        {Name = "Hybrid Attack", Icon = "Chaos", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "spam attack v1 auto attack 100k can't be changed."},
+        {Name = "Spam Armagedon", Icon = "Chaos", URL = "https://pastebin.com/raw/dXNtX5PB", Desc = "spam attack v2 with customizable attacks, with full scan"},
+        {Name = "Fly", Icon = "Player", URL = "https://pastebin.com/raw/ZrRwsPAe", Desc = "universal mobile fly with analog, keyboard with wasd"},
         {Name = "SKYBOX", Icon = "🌌", URL = "", Desc = "Change skybox"},
         {Name = "FLY", Icon = "⚡", URL = "", Desc = "Enable flying"},
         {Name = "SPEED", Icon = "🏎️", URL = "", Desc = "Increase speed"},
