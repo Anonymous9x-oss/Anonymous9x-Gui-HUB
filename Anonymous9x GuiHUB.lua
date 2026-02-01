@@ -20,7 +20,7 @@ local Config = {
         Subtext = Color3.fromRGB(142, 142, 147)
     },
     Scripts = {
-        {Name = "Hybrid Attack", Icon = "👁️", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "spam attack v1 auto attack 100k can't be changed. CHAOS"},
+        {Name = "Hybrid Attack", Icon = "Chaos", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "spam attack v1 auto attack 100k can't be changed. CHAOS"},
         {Name = "HIDE NAME", Icon = "👻", URL = "", Desc = "Hide display name"},
         {Name = "GLOW", Icon = "✨", URL = "", Desc = "Glowing effect"},
         {Name = "SKYBOX", Icon = "🌌", URL = "", Desc = "Change skybox"},
