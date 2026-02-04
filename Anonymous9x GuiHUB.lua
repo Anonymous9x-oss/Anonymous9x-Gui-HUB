@@ -23,13 +23,13 @@ local Config = {
         {Name = "Hybrid Attack", Icon = "Chaos", URL = "https://pastebin.com/raw/yTv5hwc5", Desc = "spam attack v1 auto attack 100k can't be changed."},
         {Name = "Spam Armagedon", Icon = "Chaos", URL = "https://pastebin.com/raw/dXNtX5PB", Desc = "spam attack v2 with customizable attacks, with full scan"},
         {Name = "Fly Noclip", Icon = "Player", URL = "https://pastebin.com/raw/ZrRwsPAe", Desc = "universal mobile fly with analog, keyboard with wasd"},
-        {Name = "SKYBOX", Icon = "🌌", URL = "", Desc = "Change skybox"},
-        {Name = "esp", Icon = "⚡", URL = "", Desc = "Enable flying"},
-        {Name = "SPEED", Icon = "🏎️", URL = "", Desc = "Increase speed"},
-        {Name = "ANTI-AFK", Icon = "🛡️", URL = "", Desc = "Prevent AFK kick"},
-        {Name = "ADMIN", Icon = "🔧", URL = "", Desc = "Admin tools"},
-        {Name = "FARM", Icon = "💰", URL = "", Desc = "Auto farm"},
-        {Name = "AIMBOT", Icon = "🎯", URL = "", Desc = "Auto aim"}
+        {Name = "ESP", Icon = "Player", URL = "https://pastebin.com/raw/zdqzRRDe", Desc = "can see other players without range"},
+        {Name = "Speed Walk", Icon = "Player", URL = "https://pastebin.com/raw/BAqbsBx0", Desc = "easily adjust your running speed"},
+        {Name = "Ghost Mode", Icon = "Player", URL = "https://pastebin.com/raw/A26bz69Q", Desc = "set yourself to be invisible so you can become a ghost equipped with speedboost"},
+        {Name = "No Clip", Icon = "Player", URL = "https://pastebin.com/raw/4Y3ium6c", Desc = "set you up so you can go through walls or other parts,Simple use without UI"},
+        {Name = "Infinite Jump", Icon = "Player", URL = "https://pastebin.com/raw/qrMSz160", Desc = "you can do jump spam,Simple use without UI"},
+        {Name = "Spectator full", Icon = "Player", URL = "https://pastebin.com/raw/yYrK3kNi", Desc = "Spectator All Player with tp, follow, kick, send part features"},
+        {Name = "Fling Player", Icon = "Chaos", URL = "https://pastebin.com/raw/0r27fM5A", Desc = "can kick a player very high, provided the map where the player can touch directly or not penetrate"}
     }
 }
 
@@ -168,7 +168,7 @@ local function SafeLoadScript(url, button, statusDot)
         notif.Parent = script.Parent
         
         local notifText = Instance.new("TextLabel")
-        notifText.Text = "✅ Script loaded!"
+        notifText.Text = "Script loaded!"
         notifText.Size = UDim2.new(1, 0, 1, 0)
         notifText.BackgroundTransparency = 1
         notifText.TextColor3 = Color3.new(1, 1, 1)
