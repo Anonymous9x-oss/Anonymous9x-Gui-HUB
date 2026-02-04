@@ -1,5 +1,6 @@
 --[[ 
     ANONYMOUS9x VIP - LOGIN PANEL (PUBLIC VERSION)
+    GitHub: https://github.com/Anonymous9x/Anonymous9x-VIP-Login
 ]]
 
 local Players = game:GetService("Players")
@@ -19,6 +20,27 @@ local Config = {
         Border = Color3.fromRGB(255, 255, 255),
         Text = Color3.fromRGB(255, 255, 255)
     }
+}
+
+-- VIP USERS & KEYS (15 SLOTS)
+local VIP_ACCESS = {
+    -- VIP 1-8
+    ["VIP1"] = "3320",
+    ["VIP2"] = "4201",
+    ["VIP3"] = "0965",
+    ["VIP4"] = "8801",
+    ["VIP5"] = "7710",
+    ["VIP6"] = "2210",
+    ["VIP7"] = "1010",
+    ["VIP8"] = "2001",
+    -- VIP 9-15 (NEW)
+    ["VIP9"] = "0039",
+    ["VIP10"] = "2714",
+    ["VIP11"] = "0634",
+    ["VIP12"] = "9913",
+    ["VIP13"] = "7767",
+    ["VIP14"] = "5512",
+    ["VIP15"] = "0004"
 }
 
 -- Create ScreenGui
@@ -63,12 +85,12 @@ LogTitle.Font = Enum.Font.GothamBlack
 LogTitle.TextSize = 16
 LogTitle.BackgroundTransparency = 1
 
--- Username Input
+-- Username Input (NORMAL - NO CLUE)
 local UserBox = Instance.new("TextBox", LoginFrame)
 UserBox.Size = UDim2.new(0.85, 0, 0, 35)
 UserBox.Position = UDim2.new(0.075, 0, 0.5, 0)
 UserBox.Text = ""
-UserBox.PlaceholderText = "Input User"
+UserBox.PlaceholderText = "Input user" -- NORMAL TEXT
 UserBox.BackgroundColor3 = Config.Theme.Card
 UserBox.TextColor3 = Color3.new(1,1,1)
 UserBox.Font = Enum.Font.GothamBold
@@ -76,12 +98,12 @@ UserBox.TextSize = 12
 Instance.new("UICorner", UserBox)
 AddStroke(UserBox, 1)
 
--- Key Input
+-- Key Input (NORMAL - NO CLUE)
 local KeyBox = Instance.new("TextBox", LoginFrame)
 KeyBox.Size = UDim2.new(0.85, 0, 0, 35)
 KeyBox.Position = UDim2.new(0.075, 0, 0.67, 0)
 KeyBox.Text = ""
-KeyBox.PlaceholderText = "Input Key"
+KeyBox.PlaceholderText = "Input key" -- NORMAL TEXT
 KeyBox.BackgroundColor3 = Config.Theme.Card
 KeyBox.TextColor3 = Color3.new(1,1,1)
 KeyBox.Font = Enum.Font.GothamBold
@@ -115,13 +137,45 @@ LogBtn.MouseButton1Click:Connect(function()
         return
     end
     
+    -- Auto-uppercase username for VIP check
+    local checkUsername = string.upper(username)
+    
+    -- Validate VIP access
+    if not VIP_ACCESS[checkUsername] then
+        LogBtn.Text = "INVALID LOGIN"
+        LogBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
+        task.wait(1)
+        LogBtn.Text = "AUTHENTICATE"
+        LogBtn.BackgroundColor3 = Color3.new(1,1,1)
+        UserBox.Text = ""
+        KeyBox.Text = ""
+        return
+    end
+    
+    -- Check key
+    if VIP_ACCESS[checkUsername] ~= key then
+        LogBtn.Text = "INVALID LOGIN"
+        LogBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
+        task.wait(1)
+        LogBtn.Text = "AUTHENTICATE"
+        LogBtn.BackgroundColor3 = Color3.new(1,1,1)
+        KeyBox.Text = ""
+        return
+    end
+    
+    -- Extract VIP number
+    local vipNumber = string.match(checkUsername, "%d+") or "0"
+    
     -- Show loading state
     LogBtn.Text = "VERIFYING..."
+    LogBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+    task.wait(0.3)
     
     -- Save credentials to be used by main script
     _G.VIP_CREDENTIALS = {
-        Username = username,
+        Username = checkUsername,
         Key = key,
+        Slot = vipNumber,
         Timestamp = os.time()
     }
     
@@ -132,20 +186,24 @@ LogBtn.MouseButton1Click:Connect(function()
         -- Remove login panel
         LoginFrame.Visible = false
         
-        -- Load main GUI (This will be obfuscated and hosted separately)
+        -- Load main GUI from your Pastefy URL
         local success, err = pcall(function()
-            -- This URL will be your Pastefy unlisted link
-            loadstring(game:HttpGet("https://pastefy.ga/raw/ANONYMOUS9x_MAIN_GUI"))()
+            loadstring(game:HttpGet("https://pastefy.app/3odVZhnD/raw"))()
         end)
         
         if not success then
             -- Fallback if main GUI fails to load
+            warn(">> [ERROR] Failed to load main GUI:", err)
             LogBtn.Text = "LOAD ERROR"
             LogBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
             task.wait(2)
             LogBtn.Text = "AUTHENTICATE"
             LogBtn.BackgroundColor3 = Color3.new(1,1,1)
             LoginFrame.Visible = true
+        else
+            print(">> [SUCCESS] VIP Access Granted")
+            print(">> [INFO] VIP Slot:", vipNumber)
+            print(">> [INFO] Loading main GUI from Pastefy")
         end
     end)
 end)
@@ -164,3 +222,5 @@ KeyBox.FocusLost:Connect(function(enterPressed)
 end)
 
 print(">> [ANONYMOUS9x VIP Login Panel]: Loaded Successfully!")
+print(">> ? VIP Slots Available")
+print(">> Main GUI URL: https://pastefy.app/3odVZhnD/raw")
