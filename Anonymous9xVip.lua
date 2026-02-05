@@ -203,7 +203,7 @@ LogBtn.MouseButton1Click:Connect(function()
         else
             print(">> [SUCCESS] VIP Access Granted")
             print(">> [INFO] VIP Slot:", vipNumber)
-            print(">> [INFO] Loading main GUI from Pastefy")
+            print(">> [INFO] Loading main GUI")
         end
     end)
 end)
@@ -223,4 +223,4 @@ end)
 
 print(">> [ANONYMOUS9x VIP Login Panel]: Loaded Successfully!")
 print(">> ? VIP Slots Available")
-print(">> Main GUI URL: https://pastefy.app/3odVZhnD/raw")
+print(">> KEEP GROWING")
