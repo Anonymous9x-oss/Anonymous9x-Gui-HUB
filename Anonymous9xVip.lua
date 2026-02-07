@@ -22,7 +22,7 @@ local Config = {
     }
 }
 
--- VIP USERS & KEYS (30 SLOTS)
+-- VIP USERS & KEYS (50 SLOTS)
 local VIP_ACCESS = {
     -- VIP 1-8
     ["VIP1"] = "3320",
@@ -41,7 +41,7 @@ local VIP_ACCESS = {
     ["VIP13"] = "7767",
     ["VIP14"] = "5512",
     ["VIP15"] = "0004",
-    -- VIP 16-30 (NEW)
+    -- VIP 16-30
     ["VIP16"] = "9991",
     ["VIP17"] = "5150",
     ["VIP18"] = "2018",
@@ -56,7 +56,28 @@ local VIP_ACCESS = {
     ["VIP27"] = "1872",
     ["VIP28"] = "4142",
     ["VIP29"] = "1730",
-    ["VIP30"] = "5729"
+    ["VIP30"] = "5729",
+    -- VIP 31-50 (NEW)
+    ["VIP31"] = "4827",
+    ["VIP32"] = "6391",
+    ["VIP33"] = "7254",
+    ["VIP34"] = "1583",
+    ["VIP35"] = "3946",
+    ["VIP36"] = "8472",
+    ["VIP37"] = "5069",
+    ["VIP38"] = "2173",
+    ["VIP39"] = "9641",
+    ["VIP40"] = "3528",
+    ["VIP41"] = "6895",
+    ["VIP42"] = "1437",
+    ["VIP43"] = "8702",
+    ["VIP44"] = "4296",
+    ["VIP45"] = "7934",
+    ["VIP46"] = "2685",
+    ["VIP47"] = "9150",
+    ["VIP48"] = "5763",
+    ["VIP49"] = "3412",
+    ["VIP50"] = "7029"
 }
 
 -- Create ScreenGui
@@ -202,9 +223,9 @@ LogBtn.MouseButton1Click:Connect(function()
         -- Remove login panel
         LoginFrame.Visible = false
         
-        -- Load main GUI from your Pastefy URL
+        -- Load main GUI from Pastebin URL (NEW URL)
         local success, err = pcall(function()
-            loadstring(game:HttpGet("https://pastefy.app/3odVZhnD/raw"))()
+            loadstring(game:HttpGet("https://pastebin.com/raw/NsSiLmtj"))()
         end)
         
         if not success then
@@ -219,7 +240,7 @@ LogBtn.MouseButton1Click:Connect(function()
         else
             print(">> [SUCCESS] VIP Access Granted")
             print(">> [INFO] VIP Slot:", vipNumber)
-            print(">> [INFO] Loading main GUI")
+            print(">> [INFO] Loading main GUI V1")
         end
     end)
 end)
@@ -239,4 +260,4 @@ end)
 
 print(">> [ANONYMOUS9x VIP Login Panel]: Loaded Successfully!")
 print(">> ? VIP Slots Available")
-print(">> KEEP GROWING")
+print(">> keep upgrading")
