@@ -1,5 +1,6 @@
---[[ ANONYMOUS9x VIP - LOGIN PANEL (PREMIUM HACKER EDITION) 
+--[[ ANONYMOUS9x VIP - LOGIN PANEL (PREMIUM HACKER EDITION)
 Dengan Auto-Login via Firebase (Max 2 Devices)
+Versi Tanpa Region (firebaseio.com)
 ]]
 
 local Players = game:GetService("Players")
@@ -10,7 +11,7 @@ local HttpService = game:GetService("HttpService")
 local Analytics = game:GetService("RbxAnalyticsService")
 
 -- ==================== KONFIGURASI FIREBASE ====================
-local FIREBASE_URL = "https://loginvipanonymous9x-default-rtdb.asia-southeast1.firebasedatabase.app/" -- PASTIKAN URL INI BENAR
+local FIREBASE_URL = "https://loginvipanonymous9x-default-rtdb.firebaseio.com/" -- TANPA REGION!
 
 -- ==================== FUNGSI BANTUAN FIREBASE ====================
 local function FirebaseRequest(method, path, data)
@@ -22,7 +23,13 @@ local function FirebaseRequest(method, path, data)
             return HttpService:PutAsync(url, data)
         end
     end)
-    if success and response then
+    
+    if not success then
+        warn(">> [FIREBASE ERROR] " .. tostring(response))
+        return nil
+    end
+    
+    if response and response ~= "" then
         return HttpService:JSONDecode(response)
     end
     return nil
@@ -30,7 +37,7 @@ end
 
 -- ==================== FUNGSI MENDAPATKAN DEVICE ID YANG STABIL ====================
 local function GetStableDeviceID()
-    -- Cek apakah executor mendukung file (seperti Synapse, KRNL, dll)
+    -- Cek apakah executor mendukung file (seperti Synapse, KRNL, Codex)
     if isfile and writefile then
         local filePath = "vip_device.txt"
         if isfile(filePath) then
@@ -54,16 +61,16 @@ local function GetStableDeviceID()
         end
     end
     
-    -- Fallback: gunakan setclipboard + pengumuman manual (karena tidak ada penyimpanan)
-    -- Ini akan meminta user menyimpan ID sendiri
-    warn(">> [INFO] Executor tidak mendukung penyimpanan otomatis.")
-    warn(">> [INFO] Device ID akan ditampilkan, simpan dan masukkan manual jika diperlukan.")
-    
-    -- Buat ID unik dari gabungan clientId dan waktu
+    -- Fallback untuk Delta Mobile (tidak bisa simpan) -> tampilkan ID saja
     local clientId = Analytics:GetClientId()
     local timeStamp = tostring(os.time())
     local rawID = clientId .. timeStamp
-    local deviceID = HttpService:MD5(rawID) -- Buat hash sederhana
+    local deviceID = HttpService:MD5(rawID)
+    
+    warn(">> [INFO] Executor tidak mendukung penyimpanan otomatis.")
+    warn(">> [INFO] Auto-login dinonaktifkan. Silakan login manual.")
+    print(">> Device ID (sementara): " .. deviceID)
+    
     return deviceID
 end
 
@@ -71,7 +78,7 @@ end
 local DEVICE_ID = GetStableDeviceID()
 print(">> [DEBUG] Device ID: " .. DEVICE_ID)
 
--- ==================== FUNGSI CEK AUTO LOGIN ====================
+-- ==================== CEK AUTO LOGIN ====================
 local function GetAutoLoginUser()
     local data = FirebaseRequest("GET", "device_to_user/" .. DEVICE_ID)
     if type(data) == "string" then
@@ -80,7 +87,7 @@ local function GetAutoLoginUser()
     return nil
 end
 
--- ==================== FUNGSI DAFTARKAN DEVICE KE USER ====================
+-- ==================== DAFTARKAN DEVICE KE USER ====================
 local function RegisterDevice(username)
     local userPath = "users/" .. username
     local userData = FirebaseRequest("GET", userPath) or { devices = {} }
@@ -105,7 +112,15 @@ local function RegisterDevice(username)
     return ok1 ~= nil and ok2 ~= nil
 end
 
--- ==================== CEK AUTO LOGIN ====================
+-- ==================== TEST KONEKSI FIREBASE ====================
+local testConn = FirebaseRequest("GET", ".json")
+if testConn ~= nil then
+    print(">> Firebase terkoneksi!")
+else
+    warn(">> Firebase TIDAK terkoneksi! Periksa URL atau executor.")
+end
+
+-- ==================== AUTO-LOGIN CHECK ====================
 local autoUser = GetAutoLoginUser()
 if autoUser then
     print(">> [AUTO-LOGIN] Selamat datang kembali, " .. autoUser)
@@ -547,4 +562,4 @@ end)
 
 print(">> [ANONYMOUS9x VIP Login Panel] Loaded dengan Auto-Login via Firebase (max 2 devices)")
 print(">> [INFO] Device ID: " .. DEVICE_ID)
-print(">> [INFO] Jika pertama kali, silakan login. Jika sudah pernah, akan auto-login.")
+print(">> [INFO] Jika executor support file, auto-login akan aktif.")
